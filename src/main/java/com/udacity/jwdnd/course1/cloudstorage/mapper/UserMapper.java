@@ -19,10 +19,10 @@ public interface UserMapper {
     @Insert("INSERT INTO USERS (username, salt, password, firstname, lastname) " +
             "VALUES(#{username}, #{salt}, #{pass}, #{firstname}, #{lastname})")
     @Options(useGeneratedKeys = true, keyProperty = "userId")
-    int insert(User userId);
+    int insert(User user);
 
-    @Delete("DELETE FROM users WHERE userid = #{Id}")
-    void deleteUser(int userId);
+    @Delete("DELETE FROM users WHERE userid = #{id}")
+    void deleteUser(int id);
 
 
 }
