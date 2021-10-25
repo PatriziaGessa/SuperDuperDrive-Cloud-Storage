@@ -19,6 +19,7 @@ public final class Constants {
     public static final String SUCCESS_NOTE_DELETE = "Note deleted successfully";
 
     // Success Signup
+    public static final String SIGNUP = "signup";
     public static final String SUCCESS_SIGNUP = "You successfully signed up!";
 
     // Error General
@@ -31,20 +32,17 @@ public final class Constants {
     public static final String ERROR_CREDENTIAL_DUPLICATE = "This username/url already exists on database.";
 
     // Error File
-    public static final String ERROR_FILE_REQUIRED = "You must select a file";
-    public static final String ERROR_FILE_UPLOAD = "Could not upload the file";
     public static final String ERROR_FILE_EMPTY = "File is empty";
     public static final String ERROR_FILE_ALREADY_EXISTS = "File already exists!";
 
     // Error Note
     public static final String ERROR_NOTE_TITLE_REQUIRED = "Note title field is required";
     public static final String ERROR_NOTE_DESCRIPTION_REQUIRED = "Note description field is required";
-    public static final String ERROR_NOTE_DESCRIPTION_LENGTH = "Note description field can't exceed the 1000 characters";
     public static final String ERROR_NOTE_DUPLICATE = "This note already exists on database.";
 
     // Error Signup
     public static final String ERROR_SIGNUP_GENERAL = "There was an error signing you up. Please try again.";
-    public static final String ERROR_SIGNUP_USERNAME = "The username already exists";
+    public static final String ERROR_SIGNUP_USERNAME_ALREADY_EXISTS = "The username already exists";
 
 
 

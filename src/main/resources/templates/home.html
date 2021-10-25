@@ -58,10 +58,10 @@
                         <!-- Show File -->
                         <tr th:each="file: ${files}">
                             <td>
-                                <a th:href="@{files/${file.getFileId()}}" target="_blank"
+                                <a th:href="@{files/__${file.getFileId()}__}" target="_blank"
                                    class="btn btn-success">View</a>
                                 <!-- Delete File -->
-                                <a th:href="@{files/delete/${file.getFileId()}}" class="btn btn-danger">Delete</a>
+                                <a th:href="@{files/delete/__${file.getFileId()}__}" class="btn btn-danger">Delete</a>
                             </td>
                             <th scope="row" th:text="${file.getFilename()}">ExampleFile.txt</th>
                         </tr>
@@ -101,7 +101,7 @@
                                 >Edit
                                 </button>
                                 <!-- Delete Note -->
-                                <a id="delete-note-button" th:href="@{delete/${note.getNoteId()}}"
+                                <a id="delete-note-button" th:href="@{delete/__${note.getNoteId()}__}"
                                    class="btn btn-danger">Delete</a>
                             </td>
                             <!-- Show Note -->
@@ -190,7 +190,7 @@
                                 </button>
 
                                 <!-- Delete Credential -->
-                                <a th:href="@{credentials/delete/${credential.getCredentialId()}}"
+                                <a th:href="@{credentials/delete/__${credential.getCredentialId()}__}"
                                    class="btn btn-danger"
                                    id="delete-credential-button">Delete</a>
                             </td>

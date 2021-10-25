@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/signup")
 public class SignupController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public SignupController(UserService userService) {
         this.userService = userService;
@@ -22,7 +22,7 @@ public class SignupController {
 
     @GetMapping
     public String signupView() {
-        return Constants.SUCCESS_SIGNUP;
+        return Constants.SIGNUP;
     }
 
     @PostMapping
@@ -30,7 +30,7 @@ public class SignupController {
         String signupError = null;
 
         if (!userService.isUsernameAvailable(user.getUsername())) {
-            signupError = Constants.ERROR_SIGNUP_USERNAME;
+            signupError = Constants.ERROR_SIGNUP_USERNAME_ALREADY_EXISTS;
         }
 
         if (signupError == null) {
@@ -47,6 +47,6 @@ public class SignupController {
             model.addAttribute("signupError", signupError);
         }
 
-        return "signup";
+        return Constants.SIGNUP;
     }
 }
