@@ -44,6 +44,8 @@ public final class Constants {
     public static final String ERROR_SIGNUP_GENERAL = "There was an error signing you up. Please try again.";
     public static final String ERROR_SIGNUP_USERNAME_ALREADY_EXISTS = "The username already exists";
 
+    // Delete
+    public static final String DELETE_CREDENTIAL_ID = "Delete credential id: ";
 
 
 

@@ -1,12 +1,18 @@
 package com.udacity.jwdnd.course1.cloudstorage.selenium;
 
 
+import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
+import com.udacity.jwdnd.course1.cloudstorage.utils.Constants;
+import org.assertj.core.api.Assertions;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-
+import java.util.List;
 
 
 public class HomePage {
@@ -36,7 +42,7 @@ public class HomePage {
     private WebElement noteTitle;
 
     @FindBy(id = "credential-url")
-    private WebElement credentialUrlText;
+    private WebElement credentialUrl;
 
     @FindBy(id = "credential-username")
     private WebElement credentialUsernameText;
@@ -63,6 +69,7 @@ public class HomePage {
     private WebElement deleteNoteButton;
 
     private WebDriver webDriver;
+    private WebDriverWait wait;
 
     public HomePage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -83,9 +90,17 @@ public class HomePage {
         notesTab.click();
     }
 
+    public void openCredentialsTab() throws InterruptedException {
+        webDriver.manage().window().maximize();
+        credentialsTab.click();
+    }
+
     public void createNote(String title, String desc) throws InterruptedException {
-        openNotesTab();
+        // openNotesTab();
+        this.noteTitle.click();
         Thread.sleep(2000);
+
+        this.wait.until(ExpectedConditions.elementToBeClickable(By.id("add-note")));
         addNoteButton.click();
         Thread.sleep(3000);
         noteTitle.sendKeys(title);
@@ -97,6 +112,7 @@ public class HomePage {
     public void editNote(String title, String desc) throws InterruptedException {
         openNotesTab();
         Thread.sleep(2000);
+
         editNoteButton.click();
         Thread.sleep(3000);
         noteTitle.clear();
@@ -105,6 +121,7 @@ public class HomePage {
         noteDescription.sendKeys(desc);
         saveNoteButton.click();
         Thread.sleep(20000);
+
 
     }
 
@@ -117,38 +134,92 @@ public class HomePage {
     }
 
 
-    public void openCredentialsTab() throws InterruptedException {
-        webDriver.manage().window().maximize();
-        credentialsTab.click();
-    }
-
-    public void createCredential(String url, String username, String pass) throws InterruptedException {
+    public void createCredential(TestCredential credential) throws InterruptedException {
         openNotesTab();
         Thread.sleep(2000);
         addCredentialButton.click();
         Thread.sleep(2000);
-        credentialUrlText.sendKeys(url);
-        credentialUsernameText.sendKeys(username);
-        credentialPasswordText.sendKeys(pass);
+        credentialUrl.sendKeys(credential.getUsername());
+        credentialUsernameText.sendKeys(credential.getUsername());
+        credentialPasswordText.sendKeys(credential.getPass());
         credentialSaveButton.click();
         Thread.sleep(2000);
     }
 
-    public void editCredential(String url, String user, String pass) throws InterruptedException {
+    public void editCredential(TestCredential credential) throws InterruptedException {
         openCredentialsTab();
         Thread.sleep(2000);
-        credentialUrlText.sendKeys(url);
+        WebElement buttonsTd = webDriver.findElement(By.xpath("//*[@id='credentialTable']/tbody/tr/td[1]/button"));
+        WebElement editButton = buttonsTd.findElement(By.id("edit-credential-button"));
+        // editButton.click();
+        wait.until(ExpectedConditions.elementToBeClickable(editButton));
+        Thread.sleep(3000);
+
+        credentialUrl.clear();
+        credentialUrl.sendKeys(credential.getUrl());
+
         credentialUsernameText.clear();
-        credentialUrlText.clear();
-        credentialUsernameText.sendKeys(user);
-        credentialPasswordText.sendKeys(pass);
+        credentialUsernameText.sendKeys(credential.getUsername());
+
+        credentialPasswordText.clear();
+        credentialPasswordText.sendKeys(credential.getPass());
+
         credentialSaveButton.click();
         Thread.sleep(1000);
 
 
     }
 
+    public void deleteCredential(TestCredential credential) throws InterruptedException {
+        String id = credential.getId();
+
+        Thread.sleep(2000);
+        openCredentialsTab();
+        WebElement button = webDriver.findElement(By.id(id));
+        WebElement deleteButton = webDriver.findElement(By.id("delete-credential-button"));
+        wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
+        deleteButton.click();
+        Thread.sleep(2000);
+
+    }
+
+    public void deleteListCredentials(List<TestCredential> credentials) throws InterruptedException {
+        for (TestCredential credential : credentials) {
+            deleteCredential(credential);
+
+        }
+
+    }
+
+    public static class TestCredential {
+        private String id;
+        private String url;
+        private String username;
+        private String pass;
 
 
+        public TestCredential(String id, String url, String username, String pass) {
+            this.id = id;
+            this.url = url;
+            this.username = username;
+            this.pass = pass;
+        }
 
+
+        public String getId() {
+            return id;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public String getPass() {
+            return pass;
+        }
+    }
 }
