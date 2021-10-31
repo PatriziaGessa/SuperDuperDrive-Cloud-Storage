@@ -6,8 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-//TODO check the another codes
-// - check the difference between the codes with the GitHub -> sakshee-19
+
 
 
 public class HomePage {
