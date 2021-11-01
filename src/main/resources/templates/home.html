@@ -10,8 +10,8 @@
 </head>
 <body class="p-3 mb-2 bg-light text-black">
 <div class="container">
-
     <div id="logoutDiv">
+        <!-- Logout -->
         <form action="#" method="POST" th:action="@{/logout}">
             <button type="submit" class="btn btn-secondary float-right" id="logout-button">Logout</button>
         </form>
@@ -58,7 +58,8 @@
                         <!-- Show File -->
                         <tr th:each="file: ${files}">
                             <td>
-                                <a th:href="@{files/__${file.getFileId()}__}" target="_blank"
+                                <a th:href="@{files/__${file.getFileId()}__}"
+                                   target="_blank"
                                    class="btn btn-success">View</a>
                                 <!-- Delete File -->
                                 <a th:href="@{files/delete/__${file.getFileId()}__}" class="btn btn-danger">Delete</a>
@@ -295,6 +296,7 @@
 
 
 
+
 </script>
 <script th:inline="javascript">
   var tabToSelect = [[${tab}]]
@@ -304,6 +306,7 @@
  $(function () {
     setTimeout(hideMessage, 2000)
   })
+
 
 
 </script>

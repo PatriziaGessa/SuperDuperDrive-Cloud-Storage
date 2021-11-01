@@ -57,8 +57,8 @@ public class CredentialController {
 
 
     @RequestMapping(value = "credentials/delete/{id}")
-    private String deleteCredential(@PathVariable(name = "id") String id, RedirectAttributes redirectAttributes){
-       // System.out.println("deleteCredential: " + id);
+    private String deleteCredential(@PathVariable(name = "id") String id, RedirectAttributes redirectAttributes) {
+        // System.out.println("deleteCredential: " + id);
         credentialService.deleteCredential(Integer.parseInt(id));
         redirectAttributes.addFlashAttribute("tab", "nav-credentials-tab");
         redirectAttributes.addFlashAttribute("success", true);

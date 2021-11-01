@@ -47,6 +47,11 @@ public final class Constants {
     // Delete
     public static final String DELETE_CREDENTIAL_ID = "Delete credential id: ";
 
+    public static final String LOCAL_HOST = "http://localhost:";
+    public static final String SIGNUP_SLASH = "/signup";
+    public static final String LOGIN_SLASH = "/login";
+    public static final String HOME_SLASH = "/home";
+
 
 
     /**

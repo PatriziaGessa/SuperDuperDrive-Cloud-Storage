@@ -4,14 +4,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage {
 
     @FindBy(id = "inputUsername")
-    private WebElement username;
+    private WebElement usernameInput;
 
     @FindBy(id = "inputPassword")
-    private WebElement password;
+    private WebElement passwordInput;
 
     @FindBy(id = "submit-button")
     private WebElement submit;
@@ -25,22 +27,32 @@ public class LoginPage {
     @FindBy(id = "errorMsg")
     private WebElement errorMsg;
 
+
+    private WebDriverWait wait;
+
     public LoginPage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
     }
 
-    public void login(String username, String password) {
-        this.username.sendKeys(username);
-        this.password.sendKeys(password);
-        this.submit.click();
+    public void getLogin(String username, String password) {
+        // this.username.sendKeys(username);
+        // this.password.sendKeys(password);
+        // this.submit.click();
+        wait.until(ExpectedConditions.elementToBeClickable(usernameInput)).sendKeys(username);
+        wait.until(ExpectedConditions.elementToBeClickable(passwordInput)).sendKeys(password);
+        wait.until(ExpectedConditions.elementToBeClickable(submit)).click();
+
     }
 
     public void goToSignup() {
-        this.signup.click();
+        wait.until(ExpectedConditions.elementToBeClickable(signup)).click();
+        // this.signup.click();
+
     }
 
     public void goToSignUpPage() {
-        this.signup.click();
+        wait.until(ExpectedConditions.elementToBeClickable(signup)).click();
+        // this.signup.click();
     }
 
     public String getErrorMsg() {
