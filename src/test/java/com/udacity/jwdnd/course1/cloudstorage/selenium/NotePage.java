@@ -13,6 +13,10 @@ public class NotePage {
     @FindBy(id = "nav-notes-tab")
     private WebElement navNotesTab;
 
+    @FindBy(id = "logout-button")
+    private WebElement logoutButton;
+
+
     @FindBy(id = "nav-notes")
     private WebElement btnNoteModal;
 
@@ -23,58 +27,89 @@ public class NotePage {
     private WebElement noteDescription;
 
     @FindBy(id = "save-note-button")
-    private WebElement btnAddNote;
+    private WebElement saveNoteButton;
 
-    @FindBy(className = "edit-note")
-    private WebElement btnEditNote;
+    @FindBy(id = "add-note-button")
+    private WebElement addNoteButton;
+
+    @FindBy(id = "edit-note-button")
+    private WebElement editNoteButton;
 
     @FindBy(className = "delete-note-button")
-    private WebElement btnDeleteNote;
+    private WebElement deleteNoteButton;
 
-    private WebDriverWait wait;
+    private WebDriver webDriver;
 
 
-    public NotePage(WebDriver driver) {
-        PageFactory.initElements(driver, this);
+    public NotePage(WebDriver webDriver) {
+        PageFactory.initElements(webDriver, this);
     }
 
-    public WebElement getNoteElement(WebDriver driver, String cssSelector) {
-        return driver.findElement(By.cssSelector(".list-note-item" + cssSelector));
+    public void clickNoteTab() {
+        webDriver.manage().window().maximize();
+        navNotesTab.click();
     }
 
-    public void addNote(WebDriver driver, String titleNote, String descriptionNote) {
+    public void logout() {
+        logoutButton.click();
+    }
+
+
+    public void addNote(String titleNote, String descriptionNote) throws InterruptedException {
+        clickNoteTab();
+        Thread.sleep(2000);
+
+        addNoteButton.click();
+        Thread.sleep(2000);
+
         noteTitle.clear();
         noteDescription.clear();
 
         noteTitle.sendKeys(titleNote);
         noteDescription.sendKeys(descriptionNote);
-
-        wait.until(ExpectedConditions.elementToBeClickable(btnAddNote)).click();
-
-
-    }
-
-    public void clickNotesTab() {
-        wait.until(ExpectedConditions.elementToBeClickable(navNotesTab)).click();
+        saveNoteButton.click();
+        Thread.sleep(2000);
 
     }
 
+    public String getFirstNoteTitle() {
+        return webDriver.findElement(By.id("show-note-title")).getText();
+    }
 
-    public void clickAddNoteModalButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(btnNoteModal)).click();
+    public String getFirstNoteText() {
+        return webDriver.findElement(By.id("show-note-description")).getText();
+    }
+
+
+    public void editNote(String title, String text) throws InterruptedException {
+        clickNoteTab();
+        Thread.sleep(2000);
+
+        editNoteButton.click();
+        Thread.sleep(3000);
+
+        noteTitle.clear();
+        noteDescription.clear();
+
+        noteTitle.sendKeys(title);
+        noteDescription.sendKeys(text);
+
+        saveNoteButton.click();
+        Thread.sleep(2000);
+    }
+
+    public void deleteNote() throws InterruptedException {
+        clickNoteTab();
+        Thread.sleep(2000);
+
+        deleteNoteButton.click();
+        Thread.sleep(2000);
 
     }
 
 
-    public void clickEditNoteButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(btnEditNote)).click();
-
-    }
-
-
-    public void clickDeleteNoteButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(btnDeleteNote)).click();
-
-    }
+    //public WebElement getNoteElement(WebDriver driver, String cssSelector) {
+    //  return driver.findElement(By.cssSelector(".list-note-item" + cssSelector));
+    //}
 
 }

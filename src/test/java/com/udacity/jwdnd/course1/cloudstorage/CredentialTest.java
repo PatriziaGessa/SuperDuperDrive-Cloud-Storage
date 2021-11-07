@@ -1,24 +1,25 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
-import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.CredentialPage;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.SignupPage;
-import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
-import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
+
+import com.udacity.jwdnd.course1.cloudstorage.utils.Constants;
 import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import java.util.concurrent.TimeUnit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,64 +37,40 @@ public class CredentialTest {
     private int port;
 
     private static WebDriver driver;
-
     private LoginPage loginPage;
-
     private SignupPage signupPage;
-
-    private CredentialPage credentialsPage;
-
+    private CredentialPage credentialPage;
     private HomePage homePage;
-
-    @Autowired
-    private CredentialService credentialService;
-
-    @Autowired
-    private EncryptionService encryptionService;
+    WebDriverWait wait;
 
 
     /**
-     * Included the TestInstance anotation above so that this could be an instance method.
+     * Included the TestInstance annotation above so that this could be an instance method.
      * Reason: needed to perform the signupUser() just once before the tests begin.
      */
     @BeforeAll
     public void setup() {
         WebDriverManager.chromedriver().setup();
-        this.driver = new ChromeDriver();
-        this.signupPage = new SignupPage(driver);
-        this.credentialsPage = new CredentialPage(driver);
-        this.loginPage = new LoginPage(driver);
-        this.homePage = new HomePage(driver);
-        signupUser();
+        driver = new ChromeDriver();
+
     }
 
 
-    /**
-     * As requested the user must be authenticated before each test
-     */
+    @AfterAll
+    public static void afterAll() {
+        // if (driver != null) {
+        driver.quit();
+        // }
+    }
+
     @BeforeEach
     public void beforeEach() {
-        authenticateUser();
-    }
+        driver.get(Constants.LOCAL_HOST + port + Constants.SIGNUP);
+        signupPage = new SignupPage(driver);
+        loginPage = new LoginPage(driver);
+        homePage = new HomePage(driver);
+        credentialPage = new CredentialPage(driver);
 
-
-    /**
-     *
-     */
-    @AfterEach
-    public void afterEach() {
-        this.homePage.logoutUser();
-    }
-
-
-    /**
-     *
-     */
-    @AfterAll
-    public void afterAll() {
-        if (driver != null) {
-            driver.quit();
-        }
     }
 
 
@@ -105,38 +82,37 @@ public class CredentialTest {
      */
     @Test
     @Order(1)
-    public void shouldCreateCredentials() throws InterruptedException {
-
-        TimeUnit.SECONDS.sleep(1);
-
-        this.credentialsPage.clickCredentialTab();
-
-        TimeUnit.SECONDS.sleep(1);
-
-        this.credentialsPage.clickAddCredential();
-
-        TimeUnit.SECONDS.sleep(1);
-
-        String newUrl = "udacity.com";
-        String newUsername = "rm";
-        String newPassword = "jghk43";
-
-        this.credentialsPage.addCredential(driver, newUrl, newUsername, newPassword);
-
-        TimeUnit.SECONDS.sleep(1);
-
-        this.credentialsPage.clickCredentialTab();
-
-        TimeUnit.SECONDS.sleep(1);
-
-        WebElement credentialsUrlElement = this.credentialsPage.getCredentialElement(driver, ".list-credential-url");
-        WebElement credentialsUsernameElement = this.credentialsPage.getCredentialElement(driver, ".list-credential-username");
-        WebElement credentialsPasswordElement = this.credentialsPage.getCredentialElement(driver, ".list-credential-password");
-
-        assertEquals(newUrl, credentialsUrlElement.getText());
-        assertEquals(newUsername, credentialsUsernameElement.getText());
+    public void testCreateCredentials() throws InterruptedException {
+        // Signup
+        getSignup("CreateCredentials");
 
 
+        List<CredentialPage.CredentialFormTest> credentialFormTestList = new ArrayList<>();
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+
+        credentialPage.addListCredentials(credentialFormTestList);
+
+        List<CredentialPage.CredentialFormTest> showCredentials = credentialPage.displayedCredentials();
+        for (int i = 0; i < credentialFormTestList.size(); i++) {
+            //String id = showCredentials.get(i).getId();
+
+            CredentialPage.CredentialFormTest submittedCredential = credentialFormTestList.get(i);
+            CredentialPage.CredentialFormTest itShowCredential = showCredentials.get(i);
+
+            String expectedCredentialUrl = submittedCredential.getUrl();
+            String resultCredentialUrl = itShowCredential.getUrl();
+            assertEquals(expectedCredentialUrl, resultCredentialUrl);
+
+            String expectedCredentialUsername = submittedCredential.getUsername();
+            String resultCredentialUsername = itShowCredential.getUsername();
+            assertEquals(expectedCredentialUsername, resultCredentialUsername);
+
+            String expectedCredentialPassword = submittedCredential.getPassword();
+            String resultCredentialPassword = itShowCredential.getPassword();
+            assertEquals(expectedCredentialPassword, resultCredentialPassword);
+        }
 
 
     }
@@ -150,103 +126,106 @@ public class CredentialTest {
      */
     @Test
     @Order(2)
-    public void shouldUpdateCredentials() throws InterruptedException {
-
+    public void testEditCredentials() throws InterruptedException {
+        // Signup
+        getSignup("EditCredential");
         TimeUnit.SECONDS.sleep(1);
 
-        this.credentialsPage.clickCredentialTab();
+        List<CredentialPage.CredentialFormTest> credentialFormTestList = new ArrayList<>();
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
 
-        TimeUnit.SECONDS.sleep(1);
+        credentialPage.addListCredentials(credentialFormTestList);
 
-        this.credentialsPage.clickEditCredentialButton();
 
-        TimeUnit.SECONDS.sleep(1);
+        List<CredentialPage.CredentialFormTest> showListCredentials = credentialPage.displayedCredentials();
+        List<CredentialPage.CredentialFormTest> editListCredentials = new ArrayList<>();
 
-        String updatedUrl = "udacity_2.com";
-        String updatedUsername = "rm_2";
-        String updatedPassword = "jghk43_2";
+        for (int i = 0; i < showListCredentials.size(); i++) {
+            String displayPassword = credentialPage.getShowedPasswordForCredentialId(showListCredentials.get(i).getId());
 
-        this.credentialsPage.addCredential(driver, updatedUrl, updatedUsername, updatedPassword);
+            String expectedPassword = credentialFormTestList.get(i).getPassword();
+            String resultPassword = displayPassword;
+            assertEquals(expectedPassword, resultPassword);
+        }
 
-        TimeUnit.SECONDS.sleep(1);
+        for (int i = 0; i < showListCredentials.size(); i++) {
+            CredentialPage.CredentialFormTest showCredential = showListCredentials.get(i);
+            editListCredentials.add(new CredentialPage.CredentialFormTest(
+                    showCredential.getId(),
+                    "" + i,
+                    "" + i,
+                    "" + i));
 
-        this.credentialsPage.clickCredentialTab();
 
-        TimeUnit.SECONDS.sleep(1);
+        }
+        credentialPage.editListCredentials(editListCredentials);
+        List<CredentialPage.CredentialFormTest> displayedCredentialsAfterEdit = credentialPage.displayedCredentials();
+        for (int i = 0; i < displayedCredentialsAfterEdit.size(); i++) {
+            CredentialPage.CredentialFormTest displayedCredential = displayedCredentialsAfterEdit.get(i);
+            String showedPassword = credentialPage.getShowedPasswordForCredentialId(displayedCredential.getId());
 
-        WebElement updatedCredentialsUrlElement = credentialsPage.getCredentialElement(driver, ".list-credential-url");
-        WebElement updatedCredentialsUsernameElement = credentialsPage.getCredentialElement(driver, ".list-credential-username");
-        WebElement updatedCredentialsPasswordElement = credentialsPage.getCredentialElement(driver, ".list-credential-password");
+            String expectedPassword = "";
+            String resultPassword = showedPassword;
+            assertEquals(expectedPassword + i, resultPassword);
 
-        assertEquals(updatedUrl, updatedCredentialsUrlElement.getText());
-        assertEquals(updatedUsername, updatedCredentialsUsernameElement.getText());
+            String expectedUsername = "";
+            String resultUsername = displayedCredential.getUsername();
+            assertEquals(expectedUsername + i, resultUsername);
 
+            String expectedUrl = "";
+            String resultUrl = displayedCredential.getUrl();
+            assertEquals(expectedUrl + i, resultUrl);
+        }
 
 
     }
 
-
-    /**
-     * Tests if an existing set of credentials is successfully deleted and verifies that the it is no longer displayed on the credential's list.
-     *
-     * @throws InterruptedException
-     */
     @Test
     @Order(3)
-    public void shouldDeleteCredential() throws InterruptedException {
+    public void testRemoveCredentials() throws InterruptedException {
+        // Signup
+        getSignup("DeleteCredential");
+        TimeUnit.SECONDS.sleep(1);
 
-        TimeUnit.SECONDS.sleep(3);
 
-        this.credentialsPage.clickCredentialTab();
+        List<CredentialPage.CredentialFormTest> credentialFormTestList = new ArrayList<>();
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
 
-        TimeUnit.SECONDS.sleep(3);
+        credentialPage.addListCredentials(credentialFormTestList);
 
-        this.credentialsPage.clickDeleteCredentialButton();
+        List<CredentialPage.CredentialFormTest> showCredentials = credentialPage.displayedCredentials();
+        int expectedSize = credentialFormTestList.size();
+        int resultSize = showCredentials.size();
+        assertEquals(expectedSize, resultSize);
 
-        TimeUnit.SECONDS.sleep(3);
+        credentialPage.deleteListOfCredentials(showCredentials);
+        List<CredentialPage.CredentialFormTest> showCredentialsAfterRemove = credentialPage.displayedCredentials();
+        int expectedSizeAfterRemove = 0;
+        int resultSizeAfterRemove = showCredentialsAfterRemove.size();
+        assertEquals(expectedSizeAfterRemove, resultSizeAfterRemove);
 
-        // removes the delete confirmation popup
-        Alert alert = driver.switchTo().alert();
-        ((Alert) alert).accept();
-
-        assertFalse(isElementPresent(".list-credential-url"));
-        assertFalse(isElementPresent(".list-credential-username"));
-        assertFalse(isElementPresent(".list-credential-password"));
 
     }
 
 
-    /**
-     * Checks if an HTML element exists on DOM
-     *
-     * @param selector
-     * @return
-     */
-    private boolean isElementPresent(String selector) {
-        try {
-            credentialsPage.getCredentialElement(driver, ".list-note-title");
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
+    private void getSignup(String username) throws InterruptedException {
+        signupPage.signUp("", "", "", "");
 
 
-    /**
-     * Signs up a user on the SDD application
-     */
-    public void signupUser() {
-        driver.get("http://localhost:" + this.port + "/signup");
-        signupPage.signUp("Ricardo", "Miguel", "rm", "lkdjf3");
-    }
+        //Login
+        driver.get(Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH);
+        loginPage.getLogin("CreateCredentials", "123456");
 
-
-    /**
-     * Authenticates a user
-     */
-    public void authenticateUser() {
-        driver.get("http://localhost:" + this.port + "/login");
-        loginPage.getAuthenticateUser("rm", "lkdjf3");
+        // To the Home
+        driver.get(Constants.LOCAL_HOST + port + Constants.HOME_SLASH);
+        wait = new WebDriverWait(driver, 3);
+        WebElement homeMarker = wait.until(
+                webDriver -> webDriver.findElement(By.id("nav-files-tab")));
+        assertNotNull(homeMarker);
     }
 
 }

@@ -9,33 +9,48 @@ import org.openqa.selenium.support.PageFactory;
 public class LoginPage {
 
     @FindBy(id = "inputUsername")
-    private WebElement usernameInput;
+    private WebElement inputUsername;
 
     @FindBy(id = "inputPassword")
-    private WebElement passwordInput;
+    private WebElement inputPassword;
 
     @FindBy(id = "submit-button")
-    private WebElement submit;
+    private WebElement submitButton;
 
+    @FindBy(id = "signup-link")
+    private WebElement signup;
 
 
     public LoginPage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
     }
 
-    public void getLogin(String username, String password) {
-        usernameInput.sendKeys(username);
-        passwordInput.sendKeys(password);
-        submit.click();
+    public void clickSignup() {
+        signup.click();
+    }
+
+
+    public void getLogin(String username, String password) throws InterruptedException {
+        inputUsername.clear();
+        inputPassword.clear();
+
+        inputUsername.sendKeys(username);
+        inputPassword.sendKeys(password);
+        submitButton.click();
+        Thread.sleep(2000);
 
 
     }
 
-    public void getAuthenticateUser(String username, String pass) {
-        usernameInput.sendKeys(username);
-        passwordInput.sendKeys(pass);
+    public void getAuthenticateUser(String username, String pass) throws InterruptedException {
+        inputUsername.clear();
+        inputPassword.clear();
 
-        submit.click();
+        inputUsername.sendKeys(username);
+        inputPassword.sendKeys(pass);
+
+        submitButton.click();
+        Thread.sleep(2000);
 
     }
 }

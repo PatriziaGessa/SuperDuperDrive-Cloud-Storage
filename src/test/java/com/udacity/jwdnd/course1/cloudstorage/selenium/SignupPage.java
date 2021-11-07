@@ -24,19 +24,25 @@ public class SignupPage {
     @FindBy(id = "submit-button")
     private WebElement submitBtn;
 
-    private WebDriverWait wait;
+
 
     public SignupPage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
     }
 
-    public void signUp(String firstname, String lastname, String username, String password) {
+    public void signUp(String firstname, String lastname, String username, String password) throws InterruptedException {
+        inputFirstName.clear();
+        inputLastName.clear();
+        inputUsername.clear();
+        inputPassword.clear();
+
         inputFirstName.sendKeys(firstname);
         inputLastName.sendKeys(lastname);
         inputUsername.sendKeys(username);
         inputPassword.sendKeys(password);
 
         submitBtn.click();
+        Thread.sleep(2000);
 
 
     }
