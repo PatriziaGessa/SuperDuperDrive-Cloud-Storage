@@ -30,19 +30,19 @@ public class LoginPage {
     }
 
 
-    public void getLogin(String username, String password) throws InterruptedException {
+    public void getLogin(String username, String password)  {
         inputUsername.clear();
         inputPassword.clear();
 
         inputUsername.sendKeys(username);
         inputPassword.sendKeys(password);
         submitButton.click();
-        Thread.sleep(2000);
+
 
 
     }
 
-    public void getAuthenticateUser(String username, String pass) throws InterruptedException {
+    public void getAuthenticateUser(String username, String pass)  {
         inputUsername.clear();
         inputPassword.clear();
 
@@ -50,7 +50,7 @@ public class LoginPage {
         inputPassword.sendKeys(pass);
 
         submitButton.click();
-        Thread.sleep(2000);
+
 
     }
 }

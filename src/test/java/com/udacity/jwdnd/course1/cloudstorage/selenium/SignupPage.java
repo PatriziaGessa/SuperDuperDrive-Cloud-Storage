@@ -4,8 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 public class SignupPage {
 
@@ -30,7 +29,7 @@ public class SignupPage {
         PageFactory.initElements(webDriver, this);
     }
 
-    public void signUp(String firstname, String lastname, String username, String password) throws InterruptedException {
+    public void signUp(String firstname, String lastname, String username, String password)  {
         inputFirstName.clear();
         inputLastName.clear();
         inputUsername.clear();
@@ -42,7 +41,7 @@ public class SignupPage {
         inputPassword.sendKeys(password);
 
         submitBtn.click();
-        Thread.sleep(2000);
+
 
 
     }

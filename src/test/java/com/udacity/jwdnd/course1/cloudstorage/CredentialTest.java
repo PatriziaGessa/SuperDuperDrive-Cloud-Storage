@@ -212,8 +212,8 @@ public class CredentialTest {
     }
 
 
-    private void getSignup(String username) throws InterruptedException {
-        signupPage.signUp("", "", "", "");
+    private void getSignup(String username)  {
+        signupPage.signUp("Patrizia", "Bellissima", username,"password" );
 
 
         //Login
