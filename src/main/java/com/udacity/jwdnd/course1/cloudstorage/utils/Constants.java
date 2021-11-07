@@ -19,7 +19,7 @@ public final class Constants {
     public static final String SUCCESS_NOTE_DELETE = "Note deleted successfully";
 
     // Success Signup
-    public static final String SIGNUP = "signup";
+
     public static final String SUCCESS_SIGNUP = "You successfully signed up!";
 
     // Error General
@@ -51,7 +51,10 @@ public final class Constants {
     public static final String SIGNUP_SLASH = "/signup";
     public static final String LOGIN_SLASH = "/login";
     public static final String HOME_SLASH = "/home";
-
+    public static final String RESULT_SLASH = "/result";
+    public static final String HOME = "home";
+    public static final String LOGIN = "login";
+    public static final String SIGNUP = "signup";
 
 
     /**

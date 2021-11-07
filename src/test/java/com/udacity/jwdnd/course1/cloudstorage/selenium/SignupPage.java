@@ -4,57 +4,45 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SignupPage {
 
     @FindBy(id = "inputFirstName")
-    private WebElement firstNameInput;
+    private WebElement inputFirstName;
 
     @FindBy(id = "inputLastName")
-    private WebElement lastNameInput;
+    private WebElement inputLastName;
 
     @FindBy(id = "inputUsername")
-    private WebElement usernameInput;
+    private WebElement inputUsername;
 
     @FindBy(id = "inputPassword")
-    private WebElement passwordInput;
-
-    @FindBy(id = "success-msg")
-    private WebElement success;
-
-    @FindBy(id = "error-msg")
-    private WebElement error;
+    private WebElement inputPassword;
 
     @FindBy(id = "submit-button")
-    private WebElement submitBt;
+    private WebElement submitBtn;
+
+    private WebDriverWait wait;
 
     public SignupPage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
     }
 
     public void signUp(String firstname, String lastname, String username, String password) {
-        firstNameInput.sendKeys(firstname);
-        lastNameInput.sendKeys(lastname);
-        usernameInput.sendKeys(username);
-        passwordInput.sendKeys(password);
-        submitBt.submit();
+        inputFirstName.sendKeys(firstname);
+        inputLastName.sendKeys(lastname);
+        inputUsername.sendKeys(username);
+        inputPassword.sendKeys(password);
+
+        submitBtn.click();
+
+
     }
 
 
-    public String getErrorMsg() {
-        return error.getText();
-    }
 
-    public String getSuccessMsg() {
-        return success.getText();
-    }
 
-    public void setErrorMsg(String msg) {
-        error.sendKeys(msg);
-    }
-
-    public void setSuccessMsg(String msg) {
-        success.sendKeys(msg);
-    }
 
 }

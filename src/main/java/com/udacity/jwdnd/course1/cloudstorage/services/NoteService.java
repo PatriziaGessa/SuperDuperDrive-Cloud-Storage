@@ -20,7 +20,7 @@ public class NoteService {
      * @param note the object containing the note's form data
      */
     public void createNote(Note note) {
-        this.noteMapper.insert(note);
+        noteMapper.insert(note);
     }
 
     /**
@@ -30,6 +30,15 @@ public class NoteService {
      */
     public void updateNote(Note note) {
         noteMapper.updateNote(note);
+    }
+
+    /**
+     * @param noteId
+     * @return
+     */
+
+    public Note getNoteById(int noteId) {
+        return noteMapper.getNoteById(noteId);
     }
 
 
@@ -52,7 +61,5 @@ public class NoteService {
         noteMapper.deleteNote(noteId);
     }
 
-    // public Note getNoteById(int noteId){
-    //   return noteMapper.getNoteById(noteId);
-    //   }
+
 }

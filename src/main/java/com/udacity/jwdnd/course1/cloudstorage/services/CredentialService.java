@@ -9,7 +9,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.*;
 
 @Service
 public class CredentialService {
@@ -62,10 +61,10 @@ public class CredentialService {
     }
 
     public List<Credential> getUserCredential(int userId) {
-        List<Credential> credentialList = credentialMapper.getCredential(userId);
+        List<Credential> credentialList = credentialMapper.getCredentials(userId);
         return credentialList.stream()
                 .map(this::wrapCredential)
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 
 

@@ -7,6 +7,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.NoteForm;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
+import com.udacity.jwdnd.course1.cloudstorage.utils.Constants;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +52,7 @@ public class NoteController {
         model.addAttribute("notes", noteService.getAllUserNote(userId));
         model.addAttribute("files", fileService.getUserFile(userId));
         model.addAttribute("credentials", credentialService.getUserCredential(userId));
-        return "home";
+        return Constants.HOME;
     }
 
 

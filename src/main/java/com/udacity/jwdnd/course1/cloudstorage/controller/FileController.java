@@ -71,7 +71,7 @@ public class FileController {
         model.addAttribute("notes", noteService.getAllUserNote(userId));
         model.addAttribute("credentials", credentialService.getUserCredential(userId));
 
-        return "home";
+        return Constants.HOME;
     }
 
     @RequestMapping(value = {"/files/{id}"}, method = RequestMethod.GET)
@@ -82,6 +82,7 @@ public class FileController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.parseMediaType(file.getContentType()));
+
         String fileName = file.getFilename();
         httpHeaders.setContentDispositionFormData(fileName, fileName);
         httpHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
