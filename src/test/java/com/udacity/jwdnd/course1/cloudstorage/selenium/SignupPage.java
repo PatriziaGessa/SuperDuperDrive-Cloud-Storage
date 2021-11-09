@@ -30,10 +30,6 @@ public class SignupPage {
     }
 
     public void signUp(String firstname, String lastname, String username, String password)  {
-        inputFirstName.clear();
-        inputLastName.clear();
-        inputUsername.clear();
-        inputPassword.clear();
 
         inputFirstName.sendKeys(firstname);
         inputLastName.sendKeys(lastname);

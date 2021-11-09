@@ -65,7 +65,8 @@ public class CredentialTest {
 
     @BeforeEach
     public void beforeEach() {
-        driver.get(Constants.LOCAL_HOST + port + Constants.SIGNUP);
+        String argument = Constants.LOCAL_HOST + port + Constants.SIGNUP_SLASH;
+        driver.get(argument);
         signupPage = new SignupPage(driver);
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
@@ -76,9 +77,7 @@ public class CredentialTest {
 
     /**
      * Tests if a credentials are successfully created, and verifies if it is displayed on the credential's list.
-     * Additionally it checks if the shown password is encrypted.
-     *
-     * @throws InterruptedException
+         * @throws InterruptedException
      */
     @Test
     @Order(1)
@@ -214,7 +213,6 @@ public class CredentialTest {
 
     private void getSignup(String username)  {
         signupPage.signUp("Patrizia", "Bellissima", username,"password" );
-
 
         //Login
         driver.get(Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH);
