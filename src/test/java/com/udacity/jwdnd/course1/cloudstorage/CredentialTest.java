@@ -12,7 +12,6 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -26,15 +25,12 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests for Credential Creation, Viewing, Editing, and Deletion.
  */
-
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CredentialTest {
 
 
     @LocalServerPort
-    private int port;
+    private Integer port;
 
     private static WebDriver driver;
     private LoginPage loginPage;
@@ -49,7 +45,7 @@ public class CredentialTest {
      * Reason: needed to perform the signupUser() just once before the tests begin.
      */
     @BeforeAll
-    public void setup() {
+    public static void beforeAll() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
 
@@ -77,14 +73,13 @@ public class CredentialTest {
 
     /**
      * Tests if a credentials are successfully created, and verifies if it is displayed on the credential's list.
-         * @throws InterruptedException
+     *
+     * @throws InterruptedException
      */
     @Test
-    @Order(1)
     public void testCreateCredentials() throws InterruptedException {
         // Signup
         getSignup("CreateCredentials");
-
 
         List<CredentialPage.CredentialFormTest> credentialFormTestList = new ArrayList<>();
         credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
@@ -124,7 +119,6 @@ public class CredentialTest {
      * @throws InterruptedException
      */
     @Test
-    @Order(2)
     public void testEditCredentials() throws InterruptedException {
         // Signup
         getSignup("EditCredential");
@@ -182,7 +176,6 @@ public class CredentialTest {
     }
 
     @Test
-    @Order(3)
     public void testRemoveCredentials() throws InterruptedException {
         // Signup
         getSignup("DeleteCredential");
@@ -211,15 +204,18 @@ public class CredentialTest {
     }
 
 
-    private void getSignup(String username)  {
-        signupPage.signUp("Patrizia", "Bellissima", username,"password" );
+    private void getSignup(String username) {
+        // Signup
+        signupPage.signUp("Mona", "Lisa", username, "random");
 
         //Login
-        driver.get(Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH);
-        loginPage.getLogin("CreateCredentials", "123456");
+        String argumentLocalHostLogin = Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH;
+        driver.get(argumentLocalHostLogin);
+        loginPage.getLogin(username, "random");
 
-        // To the Home
-        driver.get(Constants.LOCAL_HOST + port + Constants.HOME_SLASH);
+        //To the Home
+        String argumentLocalHostHome = Constants.LOCAL_HOST + port + Constants.HOME_SLASH;
+        driver.get(argumentLocalHostHome);
         wait = new WebDriverWait(driver, 3);
         WebElement homeMarker = wait.until(
                 webDriver -> webDriver.findElement(By.id("nav-files-tab")));
