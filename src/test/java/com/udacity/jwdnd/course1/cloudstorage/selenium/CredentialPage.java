@@ -21,7 +21,6 @@ public class CredentialPage {
     @FindBy(id = "close-credential-edit-button")
     private WebElement closeCredentialEditButton;
 
-
     @FindBy(id = "add-credential-button")
     // btnCredentialModal
     private WebElement addCredentialButton;
@@ -83,6 +82,7 @@ public class CredentialPage {
     public List<CredentialFormTest> displayedCredentials() throws InterruptedException {
         clickCredentialTab();
         Thread.sleep(2000);
+
         WebElement table = webDriver.findElement(By.id("credentialTable"));
         List<String> ids = new ArrayList<>();
         List<WebElement> listUrl = table.findElements(By.id("show-credential-url"));
@@ -202,10 +202,10 @@ public class CredentialPage {
 
 
     public static class CredentialFormTest {
-        private String id;
-        private String url;
-        private String username;
-        private String password;
+        private final String id;
+        private final String url;
+        private final String username;
+        private final String password;
 
         public CredentialFormTest(String id, String url, String username, String password) {
             this.id = id;

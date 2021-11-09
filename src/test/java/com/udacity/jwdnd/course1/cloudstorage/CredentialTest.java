@@ -42,7 +42,6 @@ public class CredentialTest {
 
     /**
      * Included the TestInstance annotation above so that this could be an instance method.
-     * Reason: needed to perform the signupUser() just once before the tests begin.
      */
     @BeforeAll
     public static void beforeAll() {
@@ -53,10 +52,19 @@ public class CredentialTest {
 
 
     @AfterAll
-    public static void afterAll() {
+    public static void endSelenium() {
         // if (driver != null) {
-        driver.quit();
+        // driver.quit();
         // }
+        driver.close();
+        try {
+            driver.quit();
+        } catch (Exception e) {
+            System.out.println("Browser closed already, " +
+                    "did not need to quit after all");
+            e.printStackTrace();
+        }
+
     }
 
     @BeforeEach
@@ -73,8 +81,6 @@ public class CredentialTest {
 
     /**
      * Tests if a credentials are successfully created, and verifies if it is displayed on the credential's list.
-     *
-     * @throws InterruptedException
      */
     @Test
     public void testCreateCredentials() throws InterruptedException {
@@ -82,9 +88,9 @@ public class CredentialTest {
         getSignup("CreateCredentials");
 
         List<CredentialPage.CredentialFormTest> credentialFormTestList = new ArrayList<>();
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("fg", "fg", "fdg", "fg"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("fg", "fg", "fg", "fg"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("fg", "fg", "fg", "fg"));
 
         credentialPage.addListCredentials(credentialFormTestList);
 
@@ -113,10 +119,8 @@ public class CredentialTest {
 
 
     /**
-     * Tests if a set of credentials is successfully edited and verifies if the changes are displayed on the credentials's list.
-     * Additionally it checks if the shown password is encrypted.
-     *
-     * @throws InterruptedException
+     * Tests if a set of credentials is successfully edited and verifies if the changes are displayed on the credential's list.
+     * Additionally, it checks if the shown password is encrypted.
      */
     @Test
     public void testEditCredentials() throws InterruptedException {
@@ -125,9 +129,9 @@ public class CredentialTest {
         TimeUnit.SECONDS.sleep(1);
 
         List<CredentialPage.CredentialFormTest> credentialFormTestList = new ArrayList<>();
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "fg", "dfg", "fdg"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "dfg", "dfg", "fgfd"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "fdgdf", "fg", "fgfd"));
 
         credentialPage.addListCredentials(credentialFormTestList);
 
@@ -136,11 +140,10 @@ public class CredentialTest {
         List<CredentialPage.CredentialFormTest> editListCredentials = new ArrayList<>();
 
         for (int i = 0; i < showListCredentials.size(); i++) {
-            String displayPassword = credentialPage.getShowedPasswordForCredentialId(showListCredentials.get(i).getId());
+            String resultDisplayPassword = credentialPage.getShowedPasswordForCredentialId(showListCredentials.get(i).getId());
 
             String expectedPassword = credentialFormTestList.get(i).getPassword();
-            String resultPassword = displayPassword;
-            assertEquals(expectedPassword, resultPassword);
+            assertEquals(expectedPassword, resultDisplayPassword);
         }
 
         for (int i = 0; i < showListCredentials.size(); i++) {
@@ -157,11 +160,10 @@ public class CredentialTest {
         List<CredentialPage.CredentialFormTest> displayedCredentialsAfterEdit = credentialPage.displayedCredentials();
         for (int i = 0; i < displayedCredentialsAfterEdit.size(); i++) {
             CredentialPage.CredentialFormTest displayedCredential = displayedCredentialsAfterEdit.get(i);
-            String showedPassword = credentialPage.getShowedPasswordForCredentialId(displayedCredential.getId());
+            String resultShowedPassword = credentialPage.getShowedPasswordForCredentialId(displayedCredential.getId());
 
             String expectedPassword = "";
-            String resultPassword = showedPassword;
-            assertEquals(expectedPassword + i, resultPassword);
+            assertEquals(expectedPassword + i, resultShowedPassword);
 
             String expectedUsername = "";
             String resultUsername = displayedCredential.getUsername();
@@ -183,9 +185,9 @@ public class CredentialTest {
 
 
         List<CredentialPage.CredentialFormTest> credentialFormTestList = new ArrayList<>();
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "", "", ""));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("dfg", "dfg", "fg", "fdg"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("fdg", "dfg", "fg", "fg"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("dfg", "dfg", "fdg", "fdg"));
 
         credentialPage.addListCredentials(credentialFormTestList);
 
