@@ -145,11 +145,12 @@ public class CredentialPage {
         Thread.sleep(3000);
 
         credentialUrl.clear();
-        credentialUsername.clear();
-        credentialPassword.clear();
-
         credentialUrl.sendKeys(credential.getUrl());
+
+        credentialUsername.clear();
         credentialUsername.sendKeys(credential.getUsername());
+
+        credentialPassword.clear();
         credentialPassword.sendKeys(credential.getPassword());
 
         credentialSaveButton.click();
@@ -175,7 +176,7 @@ public class CredentialPage {
         editButton.click();
         Thread.sleep(2000);
 
-        String password = credentialPassword.getAttribute("value");
+        String password = credentialPassword.getAttribute("attribute");
         closeCredentialEditButton.click();
         Thread.sleep(2000);
         return password;
