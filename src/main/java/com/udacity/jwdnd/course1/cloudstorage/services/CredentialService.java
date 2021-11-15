@@ -93,7 +93,7 @@ public class CredentialService {
                 credential.getCredentialId(),
                 credential.getUrl(),
                 credential.getUsername(),
-                null,
+                credential.getKey(),
                 credential.getPassword(),
                 credential.getUserId());
         mapped.setNotCypherPassword(getNotCodedPassword(credential));

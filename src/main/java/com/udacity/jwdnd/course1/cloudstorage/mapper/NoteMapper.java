@@ -29,7 +29,7 @@ public interface NoteMapper {
             "WHERE noteid = #{noteId}")
     Note getNoteById(int noteId);
 
-    @Update("UPDATE notes SET notetitle = #{noteTitle}, notedescription = #{notedescription} " +
+    @Update("UPDATE notes SET notetitle = #{noteTitle}, notedescription = #{noteDescription} " +
             "WHERE noteid = #{noteId}")
     public void updateNote(Note note);
 

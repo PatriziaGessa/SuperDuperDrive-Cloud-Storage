@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage;
 
 import com.udacity.jwdnd.course1.cloudstorage.selenium.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.LoginPage;
+import com.udacity.jwdnd.course1.cloudstorage.selenium.NotePage;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.SignupPage;
 import com.udacity.jwdnd.course1.cloudstorage.utils.Constants;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -11,7 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
-import java.util.concurrent.TimeUnit;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserTest {
 
     @LocalServerPort
-    private int port;
+    private Integer port;
     private String baseURL;
 
     private static WebDriver driver;
@@ -33,16 +34,19 @@ public class UserTest {
     @BeforeAll
     static void beforeAll() {
         WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
     }
+
 
     @BeforeEach
     public void beforeEach() {
-        baseURL = Constants.LOCAL_HOST + port;
-        driver = new ChromeDriver();
+        String argument = Constants.LOCAL_HOST + port + Constants.SIGNUP_SLASH;
+        driver.get(argument);
         signupPage = new SignupPage(driver);
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
     }
+
 
     @AfterEach
     public void afterEach() {

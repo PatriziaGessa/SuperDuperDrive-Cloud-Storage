@@ -1,9 +1,10 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
-import com.udacity.jwdnd.course1.cloudstorage.selenium.HomePage;
+
 import com.udacity.jwdnd.course1.cloudstorage.selenium.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.NotePage;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.SignupPage;
+import com.udacity.jwdnd.course1.cloudstorage.utils.Constants;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,8 +29,7 @@ public class NoteTest {
 
     private static WebDriver driver;
     private SignupPage signupPage;
-    private LoginPage loginPageObject;
-
+    private LoginPage loginPage;
     private NotePage notePage;
 
     @BeforeAll
@@ -39,16 +39,23 @@ public class NoteTest {
     }
 
     @AfterAll
-    public static void afterAll() {
-        driver.quit();
+    public static void endSelenium() {
+        driver.close();
+        try {
+            driver.quit();
+        } catch (Exception e) {
+            System.out.println("Browser closed already");
+            e.printStackTrace();
+        }
+
     }
 
     @BeforeEach
     public void beforeEach() {
-        driver.get("http://localhost:" + port + "/signup");
+        String argument = Constants.LOCAL_HOST + port + Constants.SIGNUP_SLASH;
+        driver.get(argument);
         signupPage = new SignupPage(driver);
-        loginPageObject = new LoginPage(driver);
-
+        loginPage = new LoginPage(driver);
         notePage = new NotePage(driver);
     }
 
@@ -60,40 +67,43 @@ public class NoteTest {
     private void createNote(String name, String password) throws InterruptedException {
         signupAndLogin(name, password);
 
-        // Go to home
-        driver.get("http://localhost:" + port + "/home");
+        //Get home
+        String argumentLocalHostHome = Constants.LOCAL_HOST + port + Constants.HOME_SLASH;
+        driver.get(argumentLocalHostHome);
         WebDriverWait wait = new WebDriverWait(driver, 3);
         WebElement homeMarker = wait.until
                 (webDriver -> webDriver.findElement(By.id("nav-files-tab")));
         assertNotNull(homeMarker);
 
         // Enter note
-        notePage.addNote("Title", "Text");
+        notePage.addNote("Note Title", "Description Note Text");
         Thread.sleep(3000);
 
         // Check note added
-        assertEquals("Title", notePage.getFirstNoteTitle());
-        assertEquals("Text", notePage.getFirstNoteText());
+        String expectedTitle = "Note Title";
+        String resultTitle = notePage.getFirstNoteTitle();
+        assertEquals(expectedTitle, resultTitle);
+
+        String expectedDescriptionNote = "Description Note Text";
+        String resultDescriptionNote = notePage.getFirstNoteText();
+        assertEquals(expectedDescriptionNote, resultDescriptionNote);
     }
 
-    private void signupAndLogin(String name, String password)  {
-        //Signup
-        signupPage.signUp("Patrizia", "Bellissima", name, password);
-
-        //Login
-        driver.get("http://localhost:" + port + "/login");
-        loginPageObject.getLogin(name, password);
-    }
 
     @Test
     public void testNoteEdited() throws InterruptedException {
-        createNote("editNote", "12345");
-        notePage.editNote("New Title", "New Text");
+        createNote("note test", "12345");
+        notePage.editNote("New Note Title Test", "New Note Text Test");
         Thread.sleep(3000);
 
         // Check
-        assertEquals("New Title", notePage.getFirstNoteTitle());
-        assertEquals("New Text", notePage.getFirstNoteText());
+        String expectedTitleNote = "New Note Title Test";
+        String resultTitleNote = notePage.getFirstNoteTitle();
+        assertEquals(expectedTitleNote,resultTitleNote);
+
+        String expectedDescriptionNote = "New Note Text Test";
+        String resultDescriptionNote = notePage.getFirstNoteText();
+        assertEquals(expectedDescriptionNote, resultDescriptionNote);
     }
 
     @Test
@@ -103,12 +113,23 @@ public class NoteTest {
         Thread.sleep(3000);
 
         // Check
-        try{
+        try {
             notePage.getFirstNoteTitle();
             fail("Note not deleted");
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             assertTrue(true);
         }
+    }
+
+
+    private void signupAndLogin(String name, String password) {
+        //Signup
+        signupPage.signUp("Patrizia", "Bellissima", name, password);
+
+        //Login
+        String argumentLocalHostLogin = Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH;
+        driver.get(argumentLocalHostLogin);
+        loginPage.getLogin(name, password);
     }
 
 

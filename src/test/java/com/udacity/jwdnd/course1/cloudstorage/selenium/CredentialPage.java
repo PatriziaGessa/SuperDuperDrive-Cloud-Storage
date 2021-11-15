@@ -90,8 +90,8 @@ public class CredentialPage {
             System.out.println("TAG" + url.getAttribute("tag"));
         }
 
-        listUrl.forEach(
-                url -> ids.add(url.getAttribute("tag")));
+        listUrl
+                .forEach(url -> ids.add(url.getAttribute("tag")));
         List<WebElement> usernames = table.findElements(By.id("show-credential-username"));
         List<WebElement> passwords = table.findElements(By.id("show-credential-password"));
 
@@ -176,7 +176,7 @@ public class CredentialPage {
         editButton.click();
         Thread.sleep(2000);
 
-        String password = credentialPassword.getAttribute("attribute");
+        String password = credentialPassword.getAttribute("value");
         closeCredentialEditButton.click();
         Thread.sleep(2000);
         return password;

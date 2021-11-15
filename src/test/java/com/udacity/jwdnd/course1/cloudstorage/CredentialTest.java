@@ -5,6 +5,8 @@ import com.udacity.jwdnd.course1.cloudstorage.selenium.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.selenium.SignupPage;
 
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.utils.Constants;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -38,6 +41,12 @@ public class CredentialTest {
     private CredentialPage credentialPage;
     private HomePage homePage;
     WebDriverWait wait;
+
+    @Autowired
+    private CredentialService credentialService;
+
+    @Autowired
+    private EncryptionService encryptionService;
 
 
     /**
@@ -108,9 +117,10 @@ public class CredentialTest {
             String resultCredentialUsername = itShowCredential.getUsername();
             assertEquals(expectedCredentialUsername, resultCredentialUsername);
 
+            String key = credentialService.getUserCredential(1).get(i).getKey();
             String expectedCredentialPassword = submittedCredential.getPassword();
             String resultCredentialPassword = itShowCredential.getPassword();
-            assertEquals(expectedCredentialPassword, resultCredentialPassword);
+            assertEquals(encryptionService.encryptValue(expectedCredentialPassword, key), resultCredentialPassword);
         }
 
 
