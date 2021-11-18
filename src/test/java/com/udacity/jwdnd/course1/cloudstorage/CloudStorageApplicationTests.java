@@ -29,26 +29,39 @@ class CloudStorageApplicationTests {
     private int port;
     private String baseURL;
 
-    private WebDriver driver;
+    private static WebDriver driver;
 
     @BeforeAll
     static void beforeAll() {
         WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+    }
+
+
+    @AfterAll
+    public static void endSelenium() {
+        driver.close();
+        try {
+            driver.quit();
+        } catch (Exception e) {
+            System.out.println("Browser closed already");
+            e.printStackTrace();
+        }
     }
 
     @BeforeEach
     public void beforeEach() {
-        this.driver = new ChromeDriver();
+        driver = new ChromeDriver();
         baseURL = Constants.LOCAL_HOST + port;
 
     }
 
-    @AfterEach
-    public void afterEach() {
-        if (this.driver != null) {
-            driver.quit();
-        }
-    }
+    //  @AfterEach
+    // public void afterEach() {
+    //   if (driver != null) {
+    //    driver.quit();
+    // }
+    // }
 
     @Test
     public void getLoginPage() {

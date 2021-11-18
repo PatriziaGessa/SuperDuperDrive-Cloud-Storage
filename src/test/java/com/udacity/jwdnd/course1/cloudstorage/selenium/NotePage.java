@@ -16,9 +16,11 @@ public class NotePage {
     @FindBy(id = "logout-button")
     private WebElement logoutButton;
 
-
     @FindBy(id = "nav-notes")
     private WebElement btnNoteModal;
+
+    @FindBy(id = "noteSubmit")
+    private WebElement noteSubmitBtn;
 
     @FindBy(id = "show-note-title")
     private WebElement noteTitle;
@@ -51,25 +53,35 @@ public class NotePage {
     }
 
     public void logout() {
-        logoutButton.click();
+        logoutButton.submit();
     }
 
 
     public void addNote(String titleNote, String descriptionNote) throws InterruptedException {
         clickNoteTab();
         Thread.sleep(2000);
-
-        addNoteButton.click();
+        addNoteButton.submit();
         Thread.sleep(2000);
-
-        noteTitle.clear();
-        noteDescription.clear();
 
         noteTitle.sendKeys(titleNote);
         noteDescription.sendKeys(descriptionNote);
-        saveNoteButton.click();
+        saveNoteButton.submit();
         Thread.sleep(2000);
 
+    }
+
+
+    public void editNote(String title, String text) throws InterruptedException {
+        clickNoteTab();
+        Thread.sleep(2000);
+        noteTitle.clear();
+        noteTitle.sendKeys(title);
+
+        noteDescription.clear();
+        noteDescription.sendKeys(text);
+
+        noteSubmitBtn.submit();
+        Thread.sleep(2000);
     }
 
     public String getFirstNoteTitle() {
@@ -78,33 +90,6 @@ public class NotePage {
 
     public String getFirstNoteText() {
         return webDriver.findElement(By.id("show-note-description")).getText();
-    }
-
-
-    public void editNote(String title, String text) throws InterruptedException {
-        clickNoteTab();
-        Thread.sleep(2000);
-
-        editNoteButton.click();
-        Thread.sleep(3000);
-
-        noteTitle.clear();
-        noteDescription.clear();
-
-        noteTitle.sendKeys(title);
-        noteDescription.sendKeys(text);
-
-        saveNoteButton.click();
-        Thread.sleep(2000);
-    }
-
-    public void deleteNote() throws InterruptedException {
-        clickNoteTab();
-        Thread.sleep(2000);
-
-        deleteNoteButton.click();
-        Thread.sleep(2000);
-
     }
 
 

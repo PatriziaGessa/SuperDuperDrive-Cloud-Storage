@@ -125,8 +125,6 @@ public class CredentialTest {
 
 
     }
-
-
     /**
      * Tests if a set of credentials is successfully edited and verifies if the changes are displayed on the credential's list.
      */
@@ -134,12 +132,12 @@ public class CredentialTest {
     public void testEditCredentials() throws InterruptedException {
         // Signup
         getSignup("EditCredential");
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(3);
 
         List<CredentialPage.CredentialFormTest> credentialFormTestList = new ArrayList<>();
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "fg", "dfg", "fdg"));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "dfg", "dfg", "fgfd"));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "fdgdf", "fg", "fgfd"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "https://www.udacity.com/", "udacity", "my pass Udacity"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "https://www.google.com/", "google", "my pass Google"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "https://www.selenium.dev/", "Selenium", "pass Selenium"));
 
         credentialPage.addListCredentials(credentialFormTestList);
 
@@ -193,13 +191,13 @@ public class CredentialTest {
     public void testRemoveCredentials() throws InterruptedException {
         // Signup
         getSignup("DeleteCredential");
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(3);
 
 
         List<CredentialPage.CredentialFormTest> credentialFormTestList = new ArrayList<>();
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "dfg", "fg", "fdg"));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "dfg", "fg", "fg"));
-        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "dfg", "fdg", "fdg"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "https://www.udacity.com/", "udacity", "my pass Udacity"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "https://www.google.com/", "google", "my pass Google"));
+        credentialFormTestList.add(new CredentialPage.CredentialFormTest("", "https://www.selenium.dev/", "Selenium", "pass Selenium"));
 
         credentialPage.addListCredentials(credentialFormTestList);
 

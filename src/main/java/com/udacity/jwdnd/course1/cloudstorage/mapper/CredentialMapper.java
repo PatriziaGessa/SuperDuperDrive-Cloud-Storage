@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
+
 /**
  * private int credentialId;
  * private String url;
@@ -36,3 +37,5 @@ public interface CredentialMapper {
             "WHERE credentialid = #{credentialId}")
     Credential getCredentialById(int credentialId);
 }
+
+

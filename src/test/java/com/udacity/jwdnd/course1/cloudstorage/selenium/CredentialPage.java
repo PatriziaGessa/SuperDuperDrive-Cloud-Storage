@@ -43,7 +43,6 @@ public class CredentialPage {
     @FindBy(className = "delete-credential-button")
     private WebElement deleteCredentialButton;
 
-
     private WebDriver webDriver;
 
     public CredentialPage(WebDriver webDriver) {
@@ -51,23 +50,18 @@ public class CredentialPage {
         PageFactory.initElements(webDriver, this);
     }
 
-
     // goToCredentialsTab()
     public void clickCredentialTab() throws InterruptedException {
         webDriver.manage().window().maximize();
         navCredentialsTab.click();
-
     }
 
     public void clickEditCredentialButton() {
         editCredentialButton.click();
-
     }
-
 
     public void clickDeleteCredentialButton() {
         deleteCredentialButton.click();
-
     }
 
     public void logout() {
@@ -76,25 +70,21 @@ public class CredentialPage {
 
     public void clickAddCredential() {
         addCredentialButton.click();
-
     }
 
     public List<CredentialFormTest> displayedCredentials() throws InterruptedException {
         clickCredentialTab();
         Thread.sleep(2000);
-
         WebElement table = webDriver.findElement(By.id("credentialTable"));
         List<String> ids = new ArrayList<>();
         List<WebElement> listUrl = table.findElements(By.id("show-credential-url"));
         for (WebElement url : listUrl) {
             System.out.println("TAG" + url.getAttribute("tag"));
         }
-
-        listUrl
-                .forEach(url -> ids.add(url.getAttribute("tag")));
+        listUrl.forEach(
+                url -> ids.add(url.getAttribute("tag")));
         List<WebElement> usernames = table.findElements(By.id("show-credential-username"));
         List<WebElement> passwords = table.findElements(By.id("show-credential-password"));
-
         List<CredentialFormTest> listCredentialTests = new ArrayList<>();
         for (int i = 0; i < listUrl.size(); i++) {
             listCredentialTests.add(new CredentialFormTest(
@@ -106,28 +96,20 @@ public class CredentialPage {
         return listCredentialTests;
     }
 
-
     public void addCredential(CredentialFormTest credentialFormTest) throws InterruptedException {
         clickCredentialTab();
         Thread.sleep(2000);
-
         addCredentialButton.click();
         Thread.sleep(2000);
-
         credentialUrl.clear();
         credentialUsername.clear();
         credentialPassword.clear();
-
         credentialUrl.sendKeys(credentialFormTest.getUrl());
         credentialUsername.sendKeys(credentialFormTest.getUsername());
         credentialPassword.sendKeys(credentialFormTest.getPassword());
-
         credentialSaveButton.click();
         Thread.sleep(2000);
-
-
     }
-
 
     public void addListCredentials(List<CredentialFormTest> credentialForms) throws InterruptedException {
         for (CredentialFormTest credential : credentialForms) {
@@ -138,26 +120,19 @@ public class CredentialPage {
     public void editCredential(CredentialFormTest credential) throws InterruptedException {
         clickCredentialTab();
         Thread.sleep(2000);
-
         WebElement buttonsTd = webDriver.findElement(By.id(credential.getId()));
         WebElement editButton = buttonsTd.findElement(By.id("edit-credential-button"));
         editButton.click();
         Thread.sleep(3000);
-
         credentialUrl.clear();
         credentialUrl.sendKeys(credential.getUrl());
-
         credentialUsername.clear();
         credentialUsername.sendKeys(credential.getUsername());
-
         credentialPassword.clear();
         credentialPassword.sendKeys(credential.getPassword());
-
         credentialSaveButton.click();
         Thread.sleep(2000);
-
     }
-
 
     public void editListCredentials(List<CredentialFormTest> credentials) throws InterruptedException {
         for (CredentialFormTest credential : credentials) {
@@ -165,17 +140,14 @@ public class CredentialPage {
         }
     }
 
-
     public String getShowedPasswordForCredentialId(String id) throws InterruptedException {
         // System.out.println("Get password for id: " + id);
         clickCredentialTab();
         Thread.sleep(2000);
-
         WebElement buttonsTd = webDriver.findElement(By.id(id));
         WebElement editButton = buttonsTd.findElement(By.id("edit-credential-button"));
         editButton.click();
         Thread.sleep(2000);
-
         String password = credentialPassword.getAttribute("value");
         closeCredentialEditButton.click();
         Thread.sleep(2000);
@@ -187,10 +159,8 @@ public class CredentialPage {
         //System.out.println("Delete credential id: " + id);
         clickCredentialTab();
         Thread.sleep(2000);
-
         WebElement buttonsTd = webDriver.findElement(By.id(id));
         WebElement deleteButton = buttonsTd.findElement(By.id("delete-credential-button"));
-
         deleteButton.click();
         Thread.sleep(2000);
     }
@@ -200,7 +170,6 @@ public class CredentialPage {
             deleteCredential(credential);
         }
     }
-
 
     public static class CredentialFormTest {
         private final String id;
@@ -219,27 +188,19 @@ public class CredentialPage {
             return id;
         }
 
-
         public String getUrl() {
             return url;
         }
-
 
         public String getUsername() {
             return username;
         }
 
-
         public String getPassword() {
             return password;
         }
-
-
     }
-
     //public WebElement getCredentialElement(WebDriver driver, String cssSelector) {
     //    return driver.findElement(By.cssSelector(".list-credential-item " + cssSelector));
     //}
-
-
 }
