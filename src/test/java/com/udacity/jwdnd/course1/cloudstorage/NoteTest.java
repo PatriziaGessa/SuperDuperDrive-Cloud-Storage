@@ -31,6 +31,9 @@ public class NoteTest {
     private LoginPage loginPage;
     private NotePage notePage;
     private WebDriverWait wait;
+    private String firstName = "firtname", lastName = "lastname", username = "username", password = "password";
+    private String noteTitle = "created!", noteDescription = "created!";
+    private String editedTitle = "changed!", editedDescription = "changed!";
 
 
     @BeforeAll
@@ -54,7 +57,7 @@ public class NoteTest {
     @BeforeEach
     public void beforeEach() {
         baseURL = Constants.LOCAL_HOST + port;
-        driver.get(baseURL +  Constants.SIGNUP_SLASH);
+        driver.get(baseURL + Constants.SIGNUP_SLASH);
         signupPage = new SignupPage(driver);
         loginPage = new LoginPage(driver);
         notePage = new NotePage(driver);
@@ -63,11 +66,7 @@ public class NoteTest {
 
     @Test
     public void testCreateNote() throws InterruptedException {
-        String firstName = "a", lastName = "b", username = "c", password = "d";
-        String noteTitle = "created!", noteDescription = "created!";
         wait = new WebDriverWait(driver, 10);
-
-
         // Signup
         driver.get(Constants.LOCAL_HOST + port + Constants.SIGNUP_SLASH);
         signupPage.signUp(firstName, lastName, username, password);
@@ -94,7 +93,85 @@ public class NoteTest {
         String result = driver.findElement(By.id("show-note-title")).getText();
         assertEquals(result, noteTitle);
 
+
     }
 
+    @Test
+    public void testEditNote() throws InterruptedException {
+        wait = new WebDriverWait(driver, 10);
+
+
+        // Signup
+        driver.get(Constants.LOCAL_HOST + port + Constants.SIGNUP_SLASH);
+        signupPage.signUp(firstName, lastName, username, password);
+
+        //Login
+        driver.get(Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH);
+        WebElement marker = wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
+        loginPage.getLogin(username, password);
+
+        //Get Home
+        driver.get(Constants.LOCAL_HOST + port + Constants.HOME_SLASH);
+        marker = wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-notes-tab")));
+        driver.findElement(By.id("nav-notes-tab")).click();
+
+        driver.findElement(By.id("note-edit")).click();
+        marker = wait.until(ExpectedConditions.elementToBeClickable(By.id("note-title")));
+        notePage.editNote(editedTitle, editedDescription);
+        driver.get("http://localhost:" + this.port + "/home");
+        marker = wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-notes-tab")));
+        driver.findElement(By.id("nav-notes-tab")).click();
+        marker = wait.until(ExpectedConditions.elementToBeClickable(By.id("note-row-title")));
+
+        String result = driver.findElement(By.id("show-note-title")).getText();
+        assertEquals(result, editedTitle);
+
+        driver.findElement(By.id("note-delete")).click();
+        driver.get("http://localhost:" + this.port + "/home");
+        marker = wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-notes-tab")));
+        driver.findElement(By.id("nav-notes-tab")).click();
+        boolean isExist;
+        try {
+            driver.findElement(By.id("show-note-title"));
+            isExist = true;
+        } catch (NoSuchElementException e) {
+            isExist = false;
+        }
+        assertFalse(isExist);
+
+    }
+
+    @Test
+    public void testDeleteNote() {
+        wait = new WebDriverWait(driver, 10);
+        // Signup
+        driver.get(Constants.LOCAL_HOST + port + Constants.SIGNUP_SLASH);
+        signupPage.signUp(firstName, lastName, username, password);
+
+        //Login
+        driver.get(Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH);
+        WebElement marker = wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
+        loginPage.getLogin(username, password);
+
+        //Get Home
+        driver.get(Constants.LOCAL_HOST + port + Constants.HOME_SLASH);
+        marker = wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-notes-tab")));
+        driver.findElement(By.id("nav-notes-tab")).click();
+        wait = new WebDriverWait(driver, 10);
+
+        driver.findElement(By.id("note-delete")).click();
+        driver.get(Constants.LOCAL_HOST + port + Constants.HOME_SLASH);
+        marker = wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-notes-tab")));
+        driver.findElement(By.id("nav-notes-tab")).click();
+        wait = new WebDriverWait(driver, 10);
+        boolean isExist;
+        try {
+            driver.findElement(By.id("show-note-title"));
+            isExist = true;
+        } catch (NoSuchElementException e) {
+            isExist = false;
+        }
+        assertFalse(isExist);
+    }
 
 }

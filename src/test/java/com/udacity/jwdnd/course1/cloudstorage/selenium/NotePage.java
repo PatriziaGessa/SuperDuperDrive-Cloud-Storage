@@ -58,7 +58,7 @@ public class NotePage {
 
 
     public void addNote(String titleNote, String descriptionNote) throws InterruptedException {
-        //  clickNoteTab();
+        clickNoteTab();
         // Thread.sleep(2000);
         // addNoteButton.submit();
         // Thread.sleep(2000);
@@ -72,7 +72,7 @@ public class NotePage {
 
 
     public void editNote(String title, String text) throws InterruptedException {
-        clickNoteTab();
+     //   clickNoteTab();
         Thread.sleep(2000);
         noteTitle.clear();
         noteTitle.sendKeys(title);
