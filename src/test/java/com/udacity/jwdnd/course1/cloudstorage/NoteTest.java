@@ -60,7 +60,7 @@ public class NoteTest {
         notePage = new NotePage(driver);
     }
 
-    
+
     @Test
     public void testCreateNote() throws InterruptedException {
         String firstName = "a", lastName = "b", username = "c", password = "d";

@@ -58,14 +58,14 @@ public class NotePage {
 
 
     public void addNote(String titleNote, String descriptionNote) throws InterruptedException {
-        clickNoteTab();
-        Thread.sleep(2000);
-        addNoteButton.submit();
-        Thread.sleep(2000);
+        //  clickNoteTab();
+        // Thread.sleep(2000);
+        // addNoteButton.submit();
+        // Thread.sleep(2000);
 
         noteTitle.sendKeys(titleNote);
         noteDescription.sendKeys(descriptionNote);
-        saveNoteButton.submit();
+        noteSubmitBtn.submit();
         Thread.sleep(2000);
 
     }
