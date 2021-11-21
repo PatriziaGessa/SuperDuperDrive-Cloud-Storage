@@ -218,12 +218,12 @@ public class CredentialTest {
 
     private void getSignup(String username) {
         // Signup
-        signupPage.signUp("Mona", "Lisa", username, "random");
+        signupPage.signUp("Patrizia", "Bellissima", username, "random");
 
         //Login
         String argumentLocalHostLogin = Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH;
         driver.get(argumentLocalHostLogin);
-        loginPage.getLogin(username, "random");
+        loginPage.login(username, "random");
 
         //To the Home
         String argumentLocalHostHome = Constants.LOCAL_HOST + port + Constants.HOME_SLASH;

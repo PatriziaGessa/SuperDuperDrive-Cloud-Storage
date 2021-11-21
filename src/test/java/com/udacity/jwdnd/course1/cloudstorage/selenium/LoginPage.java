@@ -30,10 +30,7 @@ public class LoginPage {
     }
 
 
-    public void getLogin(String username, String password)  {
-        inputUsername.clear();
-        inputPassword.clear();
-
+    public void login(String username, String password)  {
         inputUsername.sendKeys(username);
         inputPassword.sendKeys(password);
         submitButton.click();

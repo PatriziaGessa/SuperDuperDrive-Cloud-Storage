@@ -5,8 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 public class NotePage {
 
@@ -22,10 +21,9 @@ public class NotePage {
     @FindBy(id = "noteSubmit")
     private WebElement noteSubmitBtn;
 
-    @FindBy(id = "show-note-title")
+    @FindBy(id = "note-title")
     private WebElement noteTitle;
-
-    @FindBy(id = "show-note-description")
+    @FindBy(id = "note-description")
     private WebElement noteDescription;
 
     @FindBy(id = "save-note-button")
@@ -44,6 +42,7 @@ public class NotePage {
 
 
     public NotePage(WebDriver webDriver) {
+        this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
     }
 
@@ -58,7 +57,6 @@ public class NotePage {
 
 
     public void addNote(String titleNote, String descriptionNote) throws InterruptedException {
-        clickNoteTab();
         // Thread.sleep(2000);
         // addNoteButton.submit();
         // Thread.sleep(2000);
@@ -72,7 +70,7 @@ public class NotePage {
 
 
     public void editNote(String title, String text) throws InterruptedException {
-     //   clickNoteTab();
+        //   clickNoteTab();
         Thread.sleep(2000);
         noteTitle.clear();
         noteTitle.sendKeys(title);
@@ -92,9 +90,5 @@ public class NotePage {
         return webDriver.findElement(By.id("show-note-description")).getText();
     }
 
-
-    //public WebElement getNoteElement(WebDriver driver, String cssSelector) {
-    //  return driver.findElement(By.cssSelector(".list-note-item" + cssSelector));
-    //}
 
 }

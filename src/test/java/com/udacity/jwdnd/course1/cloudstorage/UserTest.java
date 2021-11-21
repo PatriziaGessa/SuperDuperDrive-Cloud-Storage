@@ -58,35 +58,54 @@ public class UserTest {
 
     @Test
     public void testAccessPage() {
-        driver.get("http://localhost:" + this.port + "/login");
-        Assertions.assertEquals("Login", driver.getTitle());
+        wait = new WebDriverWait(driver, 10);
 
+        // Signup
+        driver.get(Constants.LOCAL_HOST + port + Constants.SIGNUP_SLASH);
+        String expectedSignup = "Sign Up";
+        String actualSignup = driver.getTitle();
+        assertEquals(expectedSignup, actualSignup);
 
-        driver.get("http://localhost:" + this.port + "/signup");
-        Assertions.assertEquals("Sign Up", driver.getTitle());
+        // Login
+        driver.get(Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH);
+        String expectedLogin = "Login";
+        String actualLogin = driver.getTitle();
+        assertEquals(expectedLogin, actualLogin);
 
-
-        driver.get("http://localhost:" + this.port + "/home");
-        Assertions.assertNotEquals("Home", driver.getTitle());
+        // Get Home
+        driver.get(Constants.LOCAL_HOST + port + Constants.HOME_SLASH);
+        String unExpected = "Home";
+        String actual = driver.getTitle();
+        assertNotEquals(unExpected, actual);
     }
 
     @Test
-    public void testSignup() throws InterruptedException {
-        String firstName = "a", lastName = "b", username = "c", password = "d";
+    public void testSignup() {
+        String firstName = "Patrizia", lastName = "Bella", username = "username", password = "password ";
 
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait = new WebDriverWait(driver, 10);
+        signupPage = new SignupPage(driver);
+        loginPage = new LoginPage(driver);
+        homePage = new HomePage(driver);
 
-
-        driver.get("http://localhost:" + this.port + "/signup");
+        // Signup
+        driver.get(Constants.LOCAL_HOST + port + Constants.SIGNUP_SLASH);
         signupPage.signUp(firstName, lastName, username, password);
-        driver.get("http://localhost:" + this.port + "/login");
+
+        // Login
+        driver.get(Constants.LOCAL_HOST + port + Constants.LOGIN_SLASH);
         WebElement marker = wait.until(webDriver -> webDriver.findElement(By.name("username")));
-        loginPage.getLogin(username, password);
+        loginPage.login(username, password);
         marker = wait.until(webDriver -> webDriver.findElement(By.id("nav-files-tab")));
         homePage.logoutUser();
         marker = wait.until(webDriver -> webDriver.findElement(By.name("username")));
-        driver.get("http://localhost:" + this.port + "/home");
-        Assertions.assertNotEquals("Home", driver.getTitle());
+
+        // Get Home
+        driver.get(Constants.LOCAL_HOST + port + Constants.HOME_SLASH);
+
+        String unExpected = "Home";
+        String actual = driver.getTitle();
+        assertNotEquals(unExpected, actual);
     }
 
 
