@@ -33,7 +33,6 @@ public class CredentialController {
 
     @PostMapping("/credentials")
     public String addCredential(@ModelAttribute("credential") CredentialForm credentialForm, @ModelAttribute("note") NoteForm note, Model model, Authentication authentication) {
-        //System.out.println("postCredential" + credentialForm);
         String username = authentication.getName();
         int userId = userMapper.getUser(username).getUserId();
 
@@ -60,7 +59,6 @@ public class CredentialController {
 
     @RequestMapping(value = "credentials/delete/{id}")
     private String deleteCredential(@PathVariable(name = "id") String id, RedirectAttributes redirectAttributes) {
-        // System.out.println("deleteCredential: " + id);
         credentialService.deleteCredential(Integer.parseInt(id));
         redirectAttributes.addFlashAttribute("tab", "nav-credentials-tab");
         redirectAttributes.addFlashAttribute("success", true);

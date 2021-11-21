@@ -42,7 +42,6 @@ public class FileController {
     @PostMapping("/files")
     public String uploadFile(Model model, @RequestParam("fileUpload") MultipartFile file, Authentication authentication,
                              @ModelAttribute("note") NoteForm note, @ModelAttribute("credential") CredentialForm credentialForm) {
-        //  System.out.println("postFile" + file);
         String username = authentication.getName();
         int userId = userMapper.getUser(username).getUserId();
         if (file.isEmpty()) {
@@ -91,7 +90,6 @@ public class FileController {
 
     @RequestMapping(value = "files/delete/{id}")
     private String deleteFile(@PathVariable(name = "id") String id, RedirectAttributes redirectAttributes) {
-        //    System.out.println("deleteFile" + id);
         fileService.deleteFile(Integer.parseInt(id));
         redirectAttributes.addFlashAttribute("tab", "nav-files-tab");
         redirectAttributes.addFlashAttribute("success", true);
